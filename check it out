@@ -1,0 +1,23 @@
+# Find the first commit hash
+first_commit_hash=$(git rev-list --max-parents=0 HEAD)
+
+# Revert to the first commit
+git checkout $first_commit_hash
+
+# Print the content of hello.sh
+cat hello.sh
+
+# Find the hash of the second most recent commit
+second_commit_hash=$(git rev-list HEAD | sed -n '2p')
+
+# Revert to the second most recent commit
+git checkout $second_commit_hash
+
+# Print the content of hello.sh
+cat hello.sh
+
+# Return to the latest version
+git checkout master
+
+# Verify contents of hello.sh
+cat hello.sh
