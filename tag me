@@ -1,0 +1,14 @@
+# tag current version as v1
+git tag v1
+
+# tag previous version as v1-beta
+git tag v1-beta HEAD^
+
+# Navigate to v1 tagged version
+git checkout v1
+
+# Navigate to v1-beta tagged version
+git checkout v1-beta
+
+# display the tags
+git tag

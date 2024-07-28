@@ -1,0 +1,99 @@
+# git directory contents
+
+1. HEAD
+* A reference to the current branch. It points to the branch currently checked out.
+2. config
+* The configuration file for the repository. It contains settings such as remote repository URLs, user information, and more.
+3. description
+* A plain text file that contains a description of the repository. It's mostly used by Gitweb and other Git interfaces.
+4. hooks/
+* A directory containing client- or server-side scripts that run on various Git actions (e.g., commit, push, etc.). Common hooks include pre-commit, post-commit, pre-push, etc.
+5. info/
+* Contains additional information, such as the exclude file which can be used to ignore files without using .gitignore.
+6. objects/
+* This directory contains all the objects (blobs, trees, commits, and tags) that make up the history of the repository. Objects are stored in a content-addressable way using their SHA-1 hash.
+7. refs/
+* Contains references to commits, including heads (branches), tags, and remote references.
+8. logs/
+* Stores logs of changes to the references, such as commits to branches. Useful for recovering lost commits.
+9. index
+* A binary file that serves as a staging area between the working directory and the repository. It holds a snapshot of the working directory and prepares the next commit.
+10. packed-refs
+* A file that stores packed references (a more efficient way to store many references).
+11. ORIG_HEAD
+* A reference to the previous state of HEAD before the last dangerous operation (such as a reset).
+12. FETCH_HEAD
+* A file that stores the information about the last fetch operation. It's used to see what has been fetched but not yet merged.
+13. MERGE_HEAD
+* During a merge, this file stores the SHA-1 hash of the commit(s) being merged into the current branch.
+14. rebase-merge/ or rebase-apply/
+* These directories are used by Git during rebase operations to store the progress and state of the rebase.
+
+
+# Latest Object Hash
+```bash
+$ latest_object=$(find .git/objects -type f | xargs ls -lt | head -n 1 | awk -F/ '{print $(NF-1)$NF}')
+
+$ echo "Latest object hash: $latest_object"
+
+$ object_type=$(git cat-file -t $latest_object)
+$ echo "Object type: $object_type"
+
+$ echo "Object content:"
+$ git cat-file -p $latest_object
+```
+* 'find .git/objects -type f': Find all files in the .git/objects/ directory.
+* 'xargs ls -lt': List them with details, sorted by modification time. The xargs command in Unix-like operating systems is used to build and execute command lines from standard input. It takes input from a pipe, or from a file, and then executes a specified command using the input as arguments for that command.
+* 'head -n 1': Get the most recent file.
+* awk -F/ '{print $(NF-1)$NF}': Extract the directory and file name parts to get the full hash. 'awk' is a command-line utility for pattern scanning and processing language.
+'-F/' sets the field separator to /. This tells awk to split each input line into fields based on the / character.
+* 'git cat-file -t $latest_object': Print the type of the object (commit, tree, blob, or tag)
+* 'git cat-file -p $latest_object': Print the content of the object. The -p option pretty-prints the content, which is useful for human-readable formats like commit messages and tree structures.
+
+* Latest object hash: dbe7eabc6ea5029d3fbd73994b9027287f4883c4
+* Content: tree 27f3baefa5b867207b033465d6357caa1f2780da
+parent 157334d56065d07246d77054261b4a1d23e8377a
+author rotieno <rabinyitzahck@gmail.com> 1721755693 +0300
+committer rotieno <rabinyitzahck@gmail.com> 1721755693 +0300
+
+chore: add Makefile
+# Dumping Directory Tree
+* Tree objects in Git represent directories and contain references to other trees (subdirectories) and blobs (files).
+* When you dump a directory tree in Git, you essentially generate a list of all the files and directories that are part of a specific commit, along with their associated metadata.
+```bash
+# dump directory tree using the hash
+$ git ls-tree -r $latest_object
+```
+* The command produces:
+  100644 blob ea5f53171f00e91a8384b7854278b09bd0669373    Makefile
+100644 blob d938c3111d22f6d7e646757b669628d05f48c81e    check it out
+100644 blob 84a3d9f6511bb898ddac3549ed14f3f779c9bcbe    lib/hello.sh
+
+* A blob (short for "binary large object") is a data object that contains the contents of a file. It does not include file metadata such as file names, permissions, or directory structure. It simply stores the raw data of the file.
+
+* Blobs are used to store the content of files at various points in the repository's history. Every time a file changes, a new blob is created to represent the updated content.
+
+* Dump contents of lib/ directory and the hello.sh
+```bash
+# dump lib/
+$ echo "Contents of the lib/ directory:"
+$ git ls-tree -r HEAD | grep 'lib/'
+```
+It produces : 
+100644 blob 84a3d9f6511bb898ddac3549ed14f3f779c9bcbe    lib/hello.sh
+```bash
+# dump contents of hello.sh
+$ cd lib
+$ echo "Content of hello.sh:"
+$ blob_hash=$(git ls-tree HEAD | grep 'hello.sh' | awk '{print $3}')
+$ git cat-file -p $blob_hash
+```
+It produces:
+#!/bin/bash
+
+# Default is World    
+# Author: Jim Weirich 
+# Email: jim@gmail.com
+name=${1:-"World"}    
+
+echo "Hello, $name" 

@@ -1,0 +1,41 @@
+
+```bash
+# create and switch to a new branch
+$ git checkout -b greet
+
+# create new file in lib directory and add content then commit
+$ cd lib
+$ touch greeter.sh
+$ printf '#!/bin/bash\n\nGreeter() {\n\twho="$1"\n\techo "Hello, $who"\n}' > greeter.sh
+$ git add greeter.sh
+$ git commit -m "chore: add greeter.sh"
+
+# update the lib/hello.sh, stage and commit.
+$ printf '#!/bin/bash\n\nsource lib/greeter.sh\n\nname="$1"\nif [ -z "$name" ]; then\n\tname="World"\nfi\n\nGreeter "$name"' > hello.sh
+$ git add hello.sh
+$ git commit -m "chore: update hello.sh file"
+
+# update the Makefile and commit
+$ printf '# Ensure it runs the updated lib/hello.sh file\nTARGET="lib/hello.sh"\n\nrun:\n\tbash ${TARGET}' > Makefile
+$ git add Makefile
+$ git commit -m "chore: update Makefile"
+
+# switch back to the main branch
+$ git checkout master
+# compare Makefile
+$ git diff master greet -- Makefile
+# compare hello.sh
+$ git diff master greet -- hello.sh
+# compare greeter.sh
+$ git diff master greet -- greeter.sh
+# generate README
+$ echo 'This is the Hello World example   from the git project.' > README.md
+```
+* Draw a commit tree diagram illustrating the diverging changes between all branches to demonstrate the branch history.
+```bash
+$ git log --oneline --graph --all --decorate
+```
+* --oneline: Displays each commit on a single line. Shows a condensed view of the commit history. Each commit is represented by its abbreviated commit hash and commit message
+* --graph: Displays an ASCII graph of the branch and merge history next to the commit information. (Visual representation of the commit history, showing the branching and merging of commits.)
+* --all: Shows the commit history of all branches. It includes commits from all branches, not just the currently checked-out branch.
+* --decorate: Adds reference names (such as branch names and tags) next to commit hashes. It makes it easier to see which commits are referenced by branches and tags.

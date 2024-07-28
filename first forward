@@ -1,0 +1,9 @@
+## What is first forwarding?
+* Fast-Forward Merging occurs when the branch you are merging into (main) has not diverged from the branch being merged (greet). This means that all the commits in greet are directly reachable from main. In such cases, Git can simply move the main branch pointer forward to the latest commit on greet, without creating a merge commit. This results in a linear history.
+* Fast-forwarding happens when:
+
+The branch being merged into (e.g., main) is directly behind the branch being merged (e.g., greet), meaning main has no new commits since the branch split.
+
+## Merging vs Rebasing
+* Merging is a process that integrates changes from one branch into another. It results in a new merge commit, and non-linear history (preserves history of both).
+* Rebasing is a process that re-applies commits from one branch on top of another branch. It results in a linear history with the new commits on top of target branch.

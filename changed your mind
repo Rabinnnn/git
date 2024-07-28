@@ -1,0 +1,45 @@
+# modify hello.sh with unwanted comments
+printf '#!/bin/bash\n\n# This is a bad comment. We want to revert it.\nname=${1:-"World"}\n\necho "Hello, $name"' > hello.sh
+
+# revert it to original stage
+git restore hello.sh
+
+# stage
+git add hello.sh
+
+#introduce unwanted changes, stage them, then clean staging area
+$ printf '#!/bin/bash\n\n# This is an unwanted but staged comment\nname=${1:-"World"}\n\necho "Hello, $name"' > hello.sh
+$ git restore --stage hello.sh
+$ git restore hello.sh
+
+# add unwanted changes again, stage the file, commit the changes, then revert them back to their original state
+$ printf '#!/bin/bash\n\n# This is an unwanted but committed change\nname=${1:-"World"}\n\necho "Hello, $name"' > hello.sh
+$ git commit -m "chore: add unwanted committed change"
+$ git revert HEAD
+
+# tag and remove commits
+$ git tag oops
+$ git reset --hard v1
+
+# display logs with deleted commits. Focus on those tagged oops
+$ git reflog
+$ git show oops
+
+# delete unreferenced commits from history
+$ git tag -d oops
+$ git reflog expire --expire-unreachable=now --all
+
+# run garbage collection to clean up the unreferenced objects
+$ git gc --prune=now
+
+# Add author comment then commit
+$ printf '#!/bin/bash\n\n# Default is World\n# Author: Jim Weirich\nname=${1:-"World"}\n\necho "Hello, $name"' > hello.sh
+
+# Edit to add author's email without creating a new commit
+$ printf '#!/bin/bash\n\n# Default is World\n# Author: Jim Weirich\n# Email: jim@gmail.com\nname=${1:-"World"}\n\necho "Hello, $name"' > hello.sh
+
+# Stage the changes
+$ git add hello.sh
+
+# Amend the last commit to include the staged changes without changing the commit message
+$ git commit --amend --no-edit

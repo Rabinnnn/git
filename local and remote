@@ -1,0 +1,25 @@
+```bash
+# clone hello repo in work directory
+$ cd work
+$ git clone hello cloned_hello
+# show logs for cloned repo
+$ cd cloned_hello
+$ git log
+# display name of remote repo and its info
+$ git remote -v
+# list all remote and local branches
+$ git branch -a
+# update original repo README
+$ cd ../hello
+$ printf 'This is the Hello World example from the git project.\n(changed in the original)' > README.md
+# in cloned_hello fetch changes from remote repo and display logs
+$ cd ../cloned_hello
+$ git fetch
+$ git log --all --decorate --oneline --graph
+# merge changes from remote main branch into local main branch
+$ git checkout master
+$ git merge origin/master
+# add local branch greet to track remote origin/greet
+$ git checkout -b greet origin/greet
+# add a remote and push main and greet branches
+```

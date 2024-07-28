@@ -1,0 +1,13 @@
+# Create the lib/ directory (if it doesn't exist)
+mkdir -p lib
+
+# Move the hello.sh file into the lib/ directory
+git mv hello.sh lib/
+
+# Commit the move
+git commit -m "Move hello.sh to lib/ directory"
+
+# Create a Makefile with the content and commit it
+$ printf 'TARGET="lib/hello.sh"\n\nrun:\n\tbash ${TARGET}' > Makefile
+$ git add Makefile
+$ git commit -m "chore: add Makefile"
