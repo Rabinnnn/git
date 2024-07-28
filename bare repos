@@ -1,0 +1,9 @@
+# Bare repository
+* 
+A bare repository is a Git repository that does not have a working directory. Unlike a standard Git repository, which contains a .git directory along with a working copy of the project files, a bare repository consists solely of the .git directory contents, including all the version history, branches, and tags, but no checked-out copies of the files.
+
+## why is it needed?
+* Central collaboration poin
+* No direct modifications to the workingfiles.
+* Good for server-side repos
+* Bare repositories are often used in CI/CD systems where automated systems need to fetch code changes but do not require a working copy of the code.
