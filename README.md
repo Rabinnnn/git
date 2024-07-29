@@ -17,8 +17,8 @@ This project is designed to introduce one to the world of version control and co
 ```
 * Configure Git with your username and email address.
 ```bash
-    $ git config --global user.email "<your email>"
-    $ git config --global user.name "<your name>"
+    $ git config --global user.email "rotieno@gmail.com"
+    $ git config --global user.name "rotieno"
 ```
 ## Create 'work' directory
 
